@@ -1,0 +1,133 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+        "label": "cmake_init_productive_debug",
+        "type": "shell",
+        "command": "./cmake_init_productive_debug.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "cmake_init_productive_release",
+        "type": "shell",
+        "command": "./cmake_init_productive_release.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "cmake_init_unittest_debug",
+        "type": "shell",
+        "command": "./cmake_init_unittest_debug.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "cmake_init_unittest_release",
+        "type": "shell",
+        "command": "./cmake_init_unittest_release.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "clean (productive)",
+        "type": "shell",
+        "command": "./build_productive.sh",
+        "args": [
+            "clean"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "build (productive)",
+        "type": "shell",
+        "command": "./build_productive.sh",
+        "args": [
+            "all"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "clean (unittest)",
+        "type": "shell",
+        "command": "./build_unittest.sh",
+        "args": [
+            "clean"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "build (unittest)",
+        "type": "shell",
+        "command": "./build_unittest.sh",
+        "args": [
+            "all"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "Run all unittests",
+        "type": "shell",
+        "command": "./execute_unittests.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "Run selected unittests",
+        "type": "shell",
+        "command": "./execute_unittests.sh",
+        "args": [
+            "--gtest_filter=TestSuite.TestCase"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "Run all non-death-unittests",
+        "type": "shell",
+        "command": "./execute_unittests.sh",
+        "args": [
+            "--gtest_filter=-*Death*"
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "Run all non-death-unittests (memcheck)",
+        "type": "shell",
+        "command": "./execute_unittests_memcheck_all.sh",
+        "options": {
+            "cwd": "${workspaceFolder}/scripts"
+        },
+        "problemMatcher": []
+    }
+  ]
+}
