@@ -116,30 +116,20 @@ static void CLICMD_LogDemo(std::string const & restOfLine,
   pLogger->Log(gpcc::log::LogType::Fatal, "LogDemo (Fatal)");
 }
 
-static void CLICMD_LongRunningCmd(std::string const & restOfLine, gpcc::cli::CLI & cli)
+static void CLICMD_RewriteLine(std::string const & restOfLine, gpcc::cli::CLI & cli)
 {
-  bool testTermination = false;
   if (!restOfLine.empty())
+    throw gpcc::cli::UserEnteredInvalidArgsError();
+
+  cli.WriteLine("Long running (10s) started. Press Ctrl+C to abort.");
+
+  for (uint8_t i = 1U; i <= 100U; i++)
   {
-    if (restOfLine == "TT")
-      testTermination = true;
-    else
-      throw gpcc::cli::UserEnteredInvalidArgsError();
-  }
+    cli.RewriteLine(std::to_string(i) + " of 100");
 
-  if (testTermination)
-    cli.WriteLine("Long running (10s) command started (with CLI::TestTermination())");
-  else
-    cli.WriteLine("Long running (10s) command started (without CLI::TestTermination())");
+    gpcc::osal::Thread::Sleep_ms(100U);
 
-  for (uint8_t i = 1U; i <= 10U; i++)
-  {
-    cli.WriteLine(std::to_string(i) + " of 10");
-
-    gpcc::osal::Thread::Sleep_ms(1000U);
-
-    if (testTermination)
-      cli.TestTermination();
+    cli.TestTermination();
   }
 
   cli.WriteLine("Long running command finished!");
@@ -193,7 +183,7 @@ static void protected_main(void)
     spCLI->RemoveCommand("logsys");
   };
 
-  spCLI->AddCommand(gpcc::cli::Command::Create("Exit", "\n"
+  spCLI->AddCommand(gpcc::cli::Command::Create("exit", "\n"
                                                "Terminates this application",
                                                std::bind(&CLICMD_Exit,
                                                          std::placeholders::_1, std::placeholders::_2, spDWQ.get())));
@@ -232,10 +222,9 @@ static void protected_main(void)
                                                std::bind(&CLICMD_LogDemo,
                                                          std::placeholders::_1, std::placeholders::_2, spMainLogger.get())));
 
-  spCLI->AddCommand(gpcc::cli::Command::Create("LongRunningCommand", " [TT]\n"\
-                                               "Counts from 1 to 10 in 10 seconds.\n"\
-                                               "If TT is passed as parameter, then CLI::TestTermination() will be invoked periodically.",
-                                               std::bind(&CLICMD_LongRunningCmd, std::placeholders::_1, std::placeholders::_2)));
+  spCLI->AddCommand(gpcc::cli::Command::Create("CLIRewriteLine", " [TT]\n"\
+                                               "Counts from 1 to 100 in 10 seconds and uses CLI::RewriteLine() to show progress.",
+                                               std::bind(&CLICMD_RewriteLine, std::placeholders::_1, std::placeholders::_2)));
 
    auto spCOODDemo = std::make_unique<COOD_Demo>(*spCLI);
 
@@ -244,7 +233,7 @@ static void protected_main(void)
   // ============================================
   spCLI->WriteLine("CLI test\n"\
                    "================================================================================\n" \
-                   "Log into terminal and type 'Exit' to terminate.");
+                   "Log into terminal and type 'exit' to terminate.");
 
   spDWQ->Work();
 
