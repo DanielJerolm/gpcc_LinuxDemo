@@ -1,9 +1,9 @@
 [submodule "extern/gpcc"]
 	path = extern/gpcc
-	url = git@github.com:DanielJerolm/gpcc.git
+	url = ../gpcc.git
 [submodule "extern/googletest"]
 	path = extern/googletest
-	url = git@github.com:google/googletest.git
+	url = ../../google/googletest.git
 [submodule "extern/toolchain_configs"]
 	path = extern/toolchain_configs
-	url = git@github.com:DanielJerolm/toolchain_configs.git
+	url = ../toolchain_configs.git
